@@ -1,5 +1,16 @@
-import { setInterval } from 'node:timers/promises'
+import { pagesQueue } from '@/queues/pages'
+import '@/workers/parse-page-content'
+import '@/workers/process-page-content'
 
-for await (const _ of setInterval(1000)) {
-  console.log('Hello World')
+async function main() {
+  await pagesQueue.add(
+    'pages',
+    { url: 'https://google.com' },
+    { jobId: 'https://google.com' },
+  )
 }
+
+main().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})
