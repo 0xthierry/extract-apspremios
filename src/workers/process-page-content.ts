@@ -6,7 +6,7 @@ import { processPageContent } from '@/handlers/get-page-content'
 const workerConfig: WorkerOptions = {
   autorun: false,
   connection: { host: env.REDIS_HOST, port: env.REDIS_PORT },
-  concurrency: 45,
+  concurrency: 15,
 }
 
 export type JobRequest = {
