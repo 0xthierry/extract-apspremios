@@ -1,16 +1,23 @@
-import { pagesQueue } from '@/queues/pages'
-import '@/workers/parse-page-content'
-import '@/workers/process-page-content'
+import * as parseWorker from '@/workers/parse-page-content'
+import * as getWorker from '@/workers/get-page-content'
+import * as aggregateWorker from '@/workers/aggregate-page-content'
+import * as createWorker from '@/workers/create-pages'
+import { env } from '@/config/env'
 
-async function main() {
-  await pagesQueue.add(
-    'pages',
-    { url: 'https://google.com' },
-    { jobId: 'https://google.com' },
-  )
+const workers = new Map([
+  ['parse', parseWorker],
+  ['get', getWorker],
+  ['aggregate', aggregateWorker],
+  ['create', createWorker],
+])
+
+const worker = workers.get(env.WORKER)
+
+if (!worker) {
+  throw new Error(`Unknown worker: ${env.WORKER}`)
 }
 
-main().catch((error) => {
+worker.start().catch((error) => {
   console.error(error)
   process.exit(1)
 })

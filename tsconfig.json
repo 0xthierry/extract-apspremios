@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "nodenext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -22,7 +22,10 @@
       "@/*": [
         "src/*"
       ]
-    }
+    },
+    "types": [
+      "vitest/globals"
+    ]
   },
   "include": [
     "./src"

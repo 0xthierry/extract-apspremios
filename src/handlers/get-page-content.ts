@@ -1,13 +1,15 @@
 import axios from 'axios'
 import { brotliCompress } from 'node:zlib'
 import { promisify } from 'node:util'
-import { JobRequest } from '@/workers/process-page-content'
-
+import { JobRequest } from '@/workers/get-page-content'
+import { logger } from '@/core/logger'
 import { parserQueue } from '@/queues/parser'
+
+const childLogger = logger.child({ module: 'get-page-content' })
 
 const brotliCompressAsync = promisify(brotliCompress)
 
-async function getPageContent(url: string) {
+async function _getPageContent(url: string) {
   const response = await axios.get(url)
 
   return response.data
@@ -19,8 +21,9 @@ async function compressPageContent(content: string) {
   return compressedContent.toString('base64')
 }
 
-export async function processPageContent({ url }: JobRequest) {
-  const contentBase64 = await getPageContent(url).then(compressPageContent)
+export async function getPageContent({ url }: JobRequest) {
+  childLogger.info({ url }, 'Getting page content')
+  const contentBase64 = await _getPageContent(url).then(compressPageContent)
 
   const data = {
     url,
@@ -28,4 +31,5 @@ export async function processPageContent({ url }: JobRequest) {
   }
 
   await parserQueue.add(parserQueue.name, data)
+  childLogger.info({ url }, 'Finished getting page content')
 }

@@ -1,7 +1,7 @@
 import { env } from '@/config/env'
 import { Worker, WorkerOptions } from 'bullmq'
 import { pagesQueue } from '@/queues/pages'
-import { processPageContent } from '@/handlers/get-page-content'
+import { getPageContent } from '@/handlers/get-page-content'
 
 const workerConfig: WorkerOptions = {
   autorun: false,
@@ -16,9 +16,11 @@ export type JobRequest = {
 const worker = new Worker<JobRequest>(
   pagesQueue.name,
   async (job) => {
-    await processPageContent(job.data)
+    await getPageContent(job.data)
   },
   workerConfig,
 )
 
-worker.run()
+export const start = async () => {
+  worker.run()
+}

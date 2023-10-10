@@ -1,0 +1,118 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "86af9c3a-35cc-4560-a4b3-f74ee193245c",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "aggregated": {
+      "name": "aggregated",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "price": {
+          "name": "price",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "slugIdx": {
+          "name": "slugIdx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "aggregated_processed": {
+      "name": "aggregated_processed",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id_aggregated": {
+          "name": "id_aggregated",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "id_order": {
+          "name": "id_order",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "idOrderIdx": {
+          "name": "idOrderIdx",
+          "columns": [
+            "id_order"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "aggregated_processed_id_aggregated_aggregated_id_fk": {
+          "name": "aggregated_processed_id_aggregated_aggregated_id_fk",
+          "tableFrom": "aggregated_processed",
+          "tableTo": "aggregated",
+          "columnsFrom": [
+            "id_aggregated"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
