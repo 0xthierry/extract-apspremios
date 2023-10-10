@@ -48,8 +48,6 @@ function extractFromHTML(html: string) {
     .text()
     .trim()
 
-  console.log({ titlePaid })
-
   if (!price || !quantity) {
     throw new Error('Invalid page content')
   }
