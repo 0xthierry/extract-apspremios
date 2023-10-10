@@ -42,6 +42,11 @@ function extractFromHTML(html: string) {
     .text()
     .trim()
     .match(/[\d,]+/)
+  const titlePaid = $(
+    'h1:contains("Pagamento Aprovado! Agradecemos sua participação no sorteio, boa sorte!")',
+  )
+    .text()
+    .trim()
 
   if (!price || !quantity) {
     throw new Error('Invalid page content')
@@ -52,6 +57,7 @@ function extractFromHTML(html: string) {
     slug: slugify(name),
     quantity: Number(quantity[0]),
     price: Number(price[0].replace(',', '.')),
+    isPaid: titlePaid.length > 0,
   }
 }
 
@@ -69,6 +75,11 @@ export async function parsePageContent({
   const data = {
     ...parsedContent,
     orderId: String(orderId),
+  }
+
+  if (!data.isPaid) {
+    childLogger.info({ url }, 'Page is not paid, skipping')
+    return
   }
 
   await aggregateQueue.add(aggregateQueue.name, data)

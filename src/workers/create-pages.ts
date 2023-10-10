@@ -16,4 +16,6 @@ export const start = async () => {
     await pagesQueue.add(pagesQueue.name, { url }, { jobId: url })
     childLogger.info({ url }, 'Finished creating page')
   }
+
+  process.exit(0)
 }

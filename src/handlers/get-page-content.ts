@@ -12,6 +12,10 @@ const brotliCompressAsync = promisify(brotliCompress)
 async function _getPageContent(url: string) {
   const response = await axios.get(url)
 
+  if (response.status !== 200) {
+    throw new Error(`Error getting page content: ${response.status}`)
+  }
+
   return response.data
 }
 
