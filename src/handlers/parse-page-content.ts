@@ -48,6 +48,8 @@ function extractFromHTML(html: string) {
     .text()
     .trim()
 
+  console.log({ titlePaid })
+
   if (!price || !quantity) {
     throw new Error('Invalid page content')
   }
@@ -84,4 +86,5 @@ export async function parsePageContent({
 
   await aggregateQueue.add(aggregateQueue.name, data)
   childLogger.info({ url }, 'Finished parsing page content')
+  return data
 }

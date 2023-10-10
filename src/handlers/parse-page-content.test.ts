@@ -38,6 +38,7 @@ describe('ParsePageContent Suite', () => {
         quantity: 6,
         price: 0.3,
         orderId: '271093',
+        isPaid: true,
       }
 
       const parsedPageContent = await parsePageContent(jobData)
